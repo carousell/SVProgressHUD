@@ -187,6 +187,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].fadeOutAnimationDuration = duration;
 }
 
++ (void)setDisplayDuration:(NSTimeInterval)duration {
+    [self sharedView].displayDuration = duration;
+}
+
 
 #pragma mark - Show Methods
 
@@ -272,7 +276,10 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
 }
 
 + (void)showImage:(UIImage*)image status:(NSString*)status {
-    NSTimeInterval displayInterval = [self displayDurationForString:status];
+    NSTimeInterval displayInterval = [self sharedView].displayDuration;
+    if (displayInterval <= 0) {
+        displayInterval = [self displayDurationForString:status];
+    }
     [[self sharedView] showImage:image status:status duration:displayInterval];
 }
 
